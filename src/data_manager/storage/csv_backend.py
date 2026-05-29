@@ -1,4 +1,4 @@
-from tabular.storage.base import BaseStorage
+from data_manager.storage.base import BaseStorage
 import pandas as pd
 class CSVStorage(BaseStorage):
     def __init__(self):

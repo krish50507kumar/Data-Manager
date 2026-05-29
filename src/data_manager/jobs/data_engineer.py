@@ -1,8 +1,8 @@
 import numpy as np
 
-from src.tabular.core.base_job import BaseJob
+from src.data_manager.core.base_job import BaseJob
 import pandas as pd
-from src.tabular.storage.csv_backend import CSVStorage
+from src.data_manager.storage.csv_backend import CSVStorage
 
 
 class DataEngineer(BaseJob):
