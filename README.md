@@ -12,7 +12,7 @@ A Python framework for handling common data engineering and data processing task
 
 ### Storage Backends
 
-#### CSV Backend
+#### CSV Backend, JSON Backend
 
 Supports:
 
@@ -25,7 +25,6 @@ Supports:
 * More data processing tasks
 * Data Scientist utilities
 * Data Analyst utilities
-* JSON backend
 * Database backend
 * Data transformation pipelines
 * Validation system

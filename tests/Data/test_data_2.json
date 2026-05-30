@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "name": "Alice",
+        "age": 25,
+        "salary": 50000,
+        "department": "IT",
+        "city": "Delhi",
+        "experience": 2,
+        "rating": 4.5,
+        "active": true,
+        "email": "alice@example.com"
+    },
+    {
+        "id": 2,
+        "name": "Bob",
+        "age": null,
+        "salary": 60000,
+        "department": "HR",
+        "city": "Mumbai",
+        "experience": 4,
+        "rating": 4.2,
+        "active": true,
+        "email": "bob@example.com"
+    },
+    {
+        "id": 3,
+        "name": "Charlie",
+        "age": 30,
+        "salary": null,
+        "department": "Finance",
+        "city": "Bangalore",
+        "experience": 6,
+        "rating": null,
+        "active": false,
+        "email": "charlie@example.com"
+    },
+    {
+        "id": 4,
+        "name": null,
+        "age": 28,
+        "salary": 55000,
+        "department": "IT",
+        "city": null,
+        "experience": 3,
+        "rating": 4.1,
+        "active": true,
+        "email": "david@example.com"
+    },
+    {
+        "id": 5,
+        "name": "Eva",
+        "age": 22,
+        "salary": 45000,
+        "department": "Marketing",
+        "city": "Pune",
+        "experience": null,
+        "rating": 3.9,
+        "active": true,
+        "email": null
+    },
+    {
+        "id": 1,
+        "name": "Alice",
+        "age": 25,
+        "salary": 50000,
+        "department": "IT",
+        "city": "Delhi",
+        "experience": 2,
+        "rating": 4.5,
+        "active": true,
+        "email": "alice@example.com"
+    },
+    {
+        "id": 7,
+        "name": "Frank",
+        "age": 35,
+        "salary": 80000,
+        "department": "Operations",
+        "city": "Chennai",
+        "experience": 10,
+        "rating": 4.8,
+        "active": false,
+        "email": "frank@example.com"
+    },
+    {
+        "id": 8,
+        "name": "Grace",
+        "age": 27,
+        "salary": 62000,
+        "department": "IT",
+        "city": "Hyderabad",
+        "experience": 5,
+        "rating": 4.3,
+        "active": true,
+        "email": "grace@example.com"
+    },
+    {
+        "id": 9,
+        "name": "Henry",
+        "age": null,
+        "salary": null,
+        "department": null,
+        "city": "Jaipur",
+        "experience": null,
+        "rating": null,
+        "active": true,
+        "email": "henry@example.com"
+    },
+    {
+        "id": 10,
+        "name": "Ivy",
+        "age": 29,
+        "salary": 70000,
+        "department": "Finance",
+        "city": "Kolkata",
+        "experience": 7,
+        "rating": 4.6,
+        "active": false,
+        "email": "ivy@example.com"
+    }
+]

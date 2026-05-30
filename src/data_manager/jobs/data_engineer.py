@@ -18,7 +18,9 @@ class DataEngineer(BaseJob):
             self.data.dd.dropna(inplace=True)
         elif method == "const":
             numericCols = self.data.dd.select_dtypes(include=np.number).columns
+            objectCols = self.data.dd.select_dtypes(exclude=np.number).columns
             self.data.dd[numericCols] = self.data.dd[numericCols].fillna(const)
+            self.data.dd[objectCols] = self.data.dd[objectCols].fillna("Unknown")
         else :
             raise ValueError("Invalid method")
 
