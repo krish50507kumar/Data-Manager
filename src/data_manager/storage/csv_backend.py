@@ -12,5 +12,5 @@ class CSVStorage(BaseStorage):
         self.dd = pd.read_csv(self.path)
     def write(self, data):
         self.dd = data
-        self.dd.to_csv(self.path)
+        self.dd.to_csv(self.path, index=False)
 

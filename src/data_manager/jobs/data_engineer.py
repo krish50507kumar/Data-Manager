@@ -2,11 +2,10 @@ import numpy as np
 
 from src.data_manager.core.base_job import BaseJob
 import pandas as pd
-from src.data_manager.storage.csv_backend import CSVStorage
 
 
 class DataEngineer(BaseJob):
-    def __init__(self,data : CSVStorage):
+    def __init__(self,data):
         super().__init__()
         self.data = data
 
