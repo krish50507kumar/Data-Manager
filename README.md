@@ -1,38 +1,49 @@
 # Data Manager Framework
 
-A Python framework for handling common data engineering and data processing tasks.
+A Python framework for data loading, cleaning, preprocessing, and analytics. Designed to provide a unified interface for handling datasets across multiple storage backends.
 
 ## Features
 
-### Data Engineering Utilities
+### Data Cleaning
 
 * Remove duplicate records
 * Handle missing values
 * Data cleaning operations
 
+### Data Analytics
+
+* **Duplicate Analysis** - Identify and analyze duplicate records
+* **Missing Analysis** - Analyze missing values across datasets
+* **Column Statistics** - Generate descriptive statistics for columns
+* **Summary Reports** - Dataset-level summaries and insights
+* **GroupBy Analysis** - Aggregate and analyze grouped data
+
 ### Storage Backends
 
-#### CSV Backend, JSON Backend
+#### CSV Backend
 
-Supports:
+* Read CSV files
+* Write CSV files
+* Store processed datasets
 
-* Reading data
-* Writing data
-* Storing processed datasets
+#### JSON Backend
+
+* Read JSON files
+* Write JSON files
+* Store processed datasets
 
 ## Planned Features
 
-* More data processing tasks
-* Data Scientist utilities
-* Data Analyst utilities
-* Database backend
+* Database backend support
 * Data transformation pipelines
-* Validation system
+* Data validation system
 
-## Status
+## Project Status
 
-Currently under active development.
+🚧 Active Development
+
+The framework is currently under development, with new analytics and data processing features being added regularly.
 
 ## Author
 
-Krish Kumar
+**Krish Kumar**
