@@ -4,7 +4,7 @@ A Python framework for data loading, cleaning, preprocessing, and analytics. Des
 
 ## Features
 
-### Data Cleaning
+### Data Engineering
 
 * Remove duplicate records
 * Handle missing values
