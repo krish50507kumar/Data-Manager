@@ -27,6 +27,26 @@ class DataAnalytics(BaseJob):
         }
         return output
 
+    def column_stats(self,column = None):
+        if column is None:
+            column = self.data.dd.iloc[0]
+        output = self.data.dd.column.describe().to_dict()
+        return output
+
+    def summary(self):
+        output = {
+            "Rows":self.data.dd.shape[0],
+            "Columns":self.data.dd.shape[1],
+            "Data type":self.data.dd.dtype,
+            "Memory usage(Bytes)":self.data.dd.memory_usage().sum(),
+            "Missing values":self.data.dd.isnull().sum().to_dict()
+        }
+        return output
+
+    def groupby_analysis(self,group_col,agg_col,agg_func,dropna = True):
+        output = self.data.dd.groupby(group_col,dropna)[agg_col].agg(agg_func).to_dict()
+        return output
+
     def run(self, context: list[dict]):
         for task in context:
             function = getattr(self, str(task["function"]))
