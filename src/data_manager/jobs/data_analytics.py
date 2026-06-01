@@ -1,4 +1,4 @@
-from debugpy.launcher import output
+from datetime import datetime
 
 from src.data_manager.core.base_job import BaseJob
 import pandas as pd
@@ -37,14 +37,32 @@ class DataAnalytics(BaseJob):
         output = {
             "Rows":self.data.dd.shape[0],
             "Columns":self.data.dd.shape[1],
-            "Data type":self.data.dd.dtype,
-            "Memory usage(Bytes)":self.data.dd.memory_usage().sum(),
+            "Data type":self.data.dd.dtypes,
+            "Memory usage(Bytes)":self.data.dd.memory_usage(deep=True).sum(),
             "Missing values":self.data.dd.isnull().sum().to_dict()
         }
         return output
 
     def groupby_analysis(self,group_col,agg_col,agg_func,dropna = True):
         output = self.data.dd.groupby(group_col,dropna)[agg_col].agg(agg_func).to_dict()
+        return output
+
+    def profile(self):
+        missing_report = self.missing_analysis()
+        duplicate_report = self.duplicate_analysis()
+        output = {
+            "generated_at": datetime.now().isoformat(),
+            "dataset_info": self.summary(),
+            "missing_values": missing_report,
+            "duplicate_values": duplicate_report,
+            "numeric_columns": self.data.dd.select_dtypes(include=['number']).describe().to_dict(),
+            "categorical_columns": self.data.dd.select_dtypes( include=['object', 'category']).describe().to_dict(),
+            "quality_report":{
+                "missing_percentage":missing_report["Missing row percentage"],
+                "duplicate_percentage":duplicate_report["Duplicate row percentage"],
+            }
+        }
+
         return output
 
     def run(self, context: list[dict]):
