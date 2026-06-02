@@ -43,8 +43,11 @@ class DataEngineer(BaseJob):
             raise ValueError("Invalid method")
 
     def run(self, contexts: list[dict]):
-        for context in contexts:
-            function = getattr(self, str(context["function"]))
-            params = context.get("params", {})
-            function(**params)
+        try:
+            for context in contexts:
+                function = getattr(self, str(context["function"]))
+                params = context.get("params", {})
+                function(**params)
+        except Exception as e:
+            logger.error(f"{e},under Data Engineer Job")
 

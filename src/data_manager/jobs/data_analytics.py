@@ -44,7 +44,7 @@ class DataAnalytics(BaseJob):
 
         col = self.data.dd.get(column)
         if col is None:
-            raise ValueError("Please provide a valid column name.")
+            raise ValueError("The column does not exist.")
         output = col.describe().to_dict()
         return output
 
@@ -61,6 +61,8 @@ class DataAnalytics(BaseJob):
 
     def groupby_analysis(self,group_col,agg_col,agg_func,dropna = True):
         logger.info(f"executing groupby_analysis....")
+        if group_col or agg_col or agg_func is None:
+            raise ValueError("Please provide a column name or a function.")
         output = self.data.dd.groupby(group_col,dropna)[agg_col].agg(agg_func).to_dict()
         return output
 
@@ -84,7 +86,10 @@ class DataAnalytics(BaseJob):
         return output
 
     def run(self, contexts: list[dict]):
-        for context in contexts:
-            function = getattr(self, str(context["function"]))
-            params = context.get("params", {})
-            self.results[str(context["task"])] = function(**params)
+        try:
+            for context in contexts:
+                function = getattr(self, str(context["function"]))
+                params = context.get("params", {})
+                self.results[str(context["task"])] = function(**params)
+        except Exception as e:
+            logger.error(f"{e},under Data Analytics Job")

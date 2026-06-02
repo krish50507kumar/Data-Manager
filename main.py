@@ -1,10 +1,15 @@
+import pdb
+
+from scipy.interpolate import dfitpack
+
 from data_manager.storage.csv_backend import CSVStorage
 from data_manager.jobs.data_engineer import DataEngineer
 from data_manager.jobs.data_analytics import DataAnalytics
-
-data_path = "D:\\workspace\\Dev tools\\PythonProjects\\DataManager\\tests\\Data\\test_data_1.csv"
+import pandas as pd
+# data_path = "D:\\workspace\\Dev tools\\PythonProjects\\DataManager\\tests\\Data\\test_data_1.csv"
+df = pd.DataFrame()
 MyStorage = CSVStorage()
-MyStorage.load(data_path)
+MyStorage.store(df)
 
 MyDataEngineer = DataEngineer(MyStorage)
 
@@ -39,12 +44,16 @@ DataAnalyticsContext = [
         "task":"Checking_name_column",
         "function":"column_stats",
         "params":{
-            "column":"name"
         }
     },
     {
         "task":"Data_profile",
         "function":"profile",
+        "params":{}
+    },
+    {
+        "task":"grouping_name_with_salary ",
+        "function":"groupby_analysis",
         "params":{}
     }
 ]
