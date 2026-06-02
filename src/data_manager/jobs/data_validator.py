@@ -2,12 +2,23 @@ import numpy as np
 
 from src.data_manager.core.base_job import BaseJob
 import pandas as pd
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+logger = logging.getLogger("DataManager")
+
 class DataValidator(BaseJob):
     def __init__(self,data):
         super().__init__()
         self.data = data
+        self.results = {}
 
     def validate_schema(self, schema):
+        logger.info(f"Validating schema....")
         valid = True
         errors = {}
 
@@ -45,7 +56,10 @@ class DataValidator(BaseJob):
 
 
     def run(self, contexts: list[dict]):
-        for context in contexts:
-            function = getattr(self, str(context["function"]))
-            params = context.get("params", {})
-            function(**params)
+        try:
+            for context in contexts:
+                function = getattr(self, str(context["function"]))
+                params = context.get("params", {})
+                self.results[str(context["task"])] = function(**params)
+        except Exception as e:
+            logger.error(f"{e},under Data Validator Job")
