@@ -2,7 +2,7 @@ import numpy as np
 import logging
 
 
-from src.data_manager.core.base_job import BaseJob
+from data_manager.core.base_job import BaseJob
 import pandas as pd
 
 logging.basicConfig(
@@ -20,7 +20,7 @@ class DataEngineer(BaseJob):
     def removeDuplicates(self):
         logger.info(f"executing removeDuplicates....")
         before = self.data.dd.shape[0]
-        self.data.dd.drop_duplicates()
+        self.data.dd.drop_duplicates(inplace=True)
         after = self.data.dd.shape[0]
         logger.info(f"{before-after} duplicate rows removed")
 
@@ -31,7 +31,6 @@ class DataEngineer(BaseJob):
             self.data.dd.dropna(inplace=True)
             after = self.data.dd.shape[0]
             logger.info(f"{before-after} null rows dropped")
-            logger.info
         elif method == "const":
             total_null = self.data.dd.isnull().any(axis=1).sum()
             numericCols = self.data.dd.select_dtypes(include=np.number).columns

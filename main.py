@@ -1,6 +1,3 @@
-import pdb
-
-from scipy.interpolate import dfitpack
 
 from data_manager.storage.csv_backend import CSVStorage
 from data_manager.jobs.data_engineer import DataEngineer

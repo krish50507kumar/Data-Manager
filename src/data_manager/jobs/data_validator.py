@@ -1,7 +1,13 @@
 import numpy as np
 
-from src.data_manager.core.base_job import BaseJob
+from data_manager.core.base_job import BaseJob
 import pandas as pd
+from pandas.api.types import (
+    is_string_dtype,
+    is_numeric_dtype,
+    is_integer_dtype,
+    is_float_dtype
+)
 import logging
 
 logging.basicConfig(
@@ -18,36 +24,69 @@ class DataValidator(BaseJob):
         self.results = {}
 
     def validate_schema(self, schema):
-        logger.info(f"Validating schema....")
+        logger.info("Validating schema....")
+
         valid = True
         errors = {}
 
         for col, constraints in schema.items():
+
             if col not in self.data.dd.columns:
                 errors[col] = "Column not found"
                 valid = False
                 continue
 
-            if not constraints.get("nullable", True):
-                null_count = self.data.dd[col].isnull().sum()
+            series = self.data.dd[col]
+
+            nullable = constraints.get("nullable", True)
+
+            if not nullable:
+                null_count = series.isnull().sum()
+
                 if null_count > 0:
                     errors[col] = f"Contains {null_count} null values"
                     valid = False
                     continue
 
-            expected_dtype = constraints["dtype"]
-            actual_dtype = self.data.dd[col].dtype
+            expected_dtype = constraints.get("dtype")
 
-            if not np.issubdtype(actual_dtype, expected_dtype):
-                errors[col] = f"Expected {expected_dtype.__name__}, found {actual_dtype}"
+            if expected_dtype is None:
+                continue
+
+            dtype_valid = True
+
+            if expected_dtype == str:
+                dtype_valid = is_string_dtype(series)
+
+            elif expected_dtype == int:
+                dtype_valid = is_integer_dtype(series)
+
+            elif expected_dtype == float:
+                dtype_valid = is_float_dtype(series)
+
+            elif expected_dtype == np.number:
+                dtype_valid = is_numeric_dtype(series)
+
+
+            elif expected_dtype == object:
+                dtype_valid = is_string_dtype(series)
+
+            else:
+                errors[col] = f"Unsupported dtype: {expected_dtype}"
                 valid = False
+                continue
 
-            if expected_dtype in [int, float, np.number]:
-                if not pd.api.types.is_numeric_dtype(self.data.ddf[col]):
-                    errors[col] = "Contains non-numeric values"
-                    valid = False
+            if not dtype_valid:
+                errors[col] = (
+                    f"Expected {expected_dtype.__name__}, "
+                    f"found {series.dtype}"
+                )
+                valid = False
+        return {
+            "valid": valid,
+            "errors": errors
+        }
 
-        return {"valid": valid, "errors": errors}
 
 
     def run(self, contexts: list[dict]):

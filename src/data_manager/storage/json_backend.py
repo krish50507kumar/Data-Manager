@@ -4,7 +4,7 @@ class JSONStorage(BaseStorage):
     def __init__(self):
         super().__init__()
         self.dd=None
-        self.path = None | str
+        self.path = None
     def load(self, path):
         self.path = path
         self.dd = pd.read_json(path)

@@ -7,7 +7,7 @@ logging.basicConfig(
 
 logger = logging.getLogger("DataManager")
 
-from src.data_manager.core.base_job import BaseJob
+from data_manager.core.base_job import BaseJob
 import pandas as pd
 class DataAnalytics(BaseJob):
     def __init__(self,data):
@@ -76,7 +76,7 @@ class DataAnalytics(BaseJob):
             "missing_values": missing_report,
             "duplicate_values": duplicate_report,
             "numeric_columns": self.data.dd.select_dtypes(include=['number']).describe().to_dict(),
-            "categorical_columns": self.data.dd.select_dtypes( include=['object', 'category']).describe().to_dict(),
+            "categorical_columns": self.data.dd.select_dtypes( include=['object', 'category','string']).describe().to_dict(),
             "quality_report":{
                 "missing_percentage":missing_report["Missing row percentage"],
                 "duplicate_percentage":duplicate_report["Duplicate row percentage"],
@@ -93,3 +93,4 @@ class DataAnalytics(BaseJob):
                 self.results[str(context["task"])] = function(**params)
         except Exception as e:
             logger.error(f"{e},under Data Analytics Job")
+            raise
