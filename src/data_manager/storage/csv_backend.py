@@ -7,7 +7,7 @@ class CSVStorage(BaseStorage):
         self.path = None | str
     def store(self, data):
         self.dd = data
-    def read(self, path):
+    def load(self, path):
         self.path = path
         self.dd = pd.read_csv(self.path)
     def write(self, data):

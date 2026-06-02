@@ -5,7 +5,7 @@ class InMemoryStorage(BaseStorage):
         super().__init__()
         self.path = None | str
         self.dd = None
-    def read(self, path):
+    def load(self, path):
         self.path = path
         pass
     def write(self, path, data):

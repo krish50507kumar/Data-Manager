@@ -3,7 +3,7 @@ class BaseStorage(ABC):
     def __init__(self):
         pass
     @abstractmethod
-    def read(self, path):
+    def load(self, path):
         pass
     @abstractmethod
     def write(self, data):
