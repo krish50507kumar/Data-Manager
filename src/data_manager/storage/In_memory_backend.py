@@ -8,8 +8,8 @@ class InMemoryStorage(BaseStorage):
     def load(self, path):
         self.path = path
         pass
-    def write(self, path, data):
-        self.dd = data
+    def write(self, path):
+        pass
     def store(self, data):
         self.dd = data
         

@@ -1,4 +1,11 @@
 from datetime import datetime
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+logger = logging.getLogger("DataManager")
 
 from src.data_manager.core.base_job import BaseJob
 import pandas as pd
@@ -6,8 +13,10 @@ class DataAnalytics(BaseJob):
     def __init__(self,data):
         super().__init__()
         self.data = data
+        self.results = {}
 
     def duplicate_analysis(self):
+        logger.info(f"executing duplicate_analysis....")
         total_rows = self.data.dd.shape[0]
         duplicate_row =self.data.dd.duplicated().sum()
         output = {
@@ -17,6 +26,7 @@ class DataAnalytics(BaseJob):
         return output
 
     def missing_analysis(self):
+        logger.info(f"executing missing_analysis....")
         no_of_missing_rows = self.data.dd.isnull().any(axis=1).sum()
         total_rows = self.data.dd.shape[0]
         column_wise_null_count = self.data.dd.isnull().sum().to_dict()
@@ -27,13 +37,19 @@ class DataAnalytics(BaseJob):
         }
         return output
 
-    def column_stats(self,column = None):
+    def column_stats(self, column=None):
+        logger.info(f"executing column_stats over {column}....")
         if column is None:
-            column = self.data.dd.iloc[0]
-        output = self.data.dd.column.describe().to_dict()
+            raise ValueError("Please provide a column name.")
+
+        col = self.data.dd.get(column)
+        if col is None:
+            raise ValueError("Please provide a valid column name.")
+        output = col.describe().to_dict()
         return output
 
     def summary(self):
+        logger.info(f"executing summary....")
         output = {
             "Rows":self.data.dd.shape[0],
             "Columns":self.data.dd.shape[1],
@@ -44,10 +60,12 @@ class DataAnalytics(BaseJob):
         return output
 
     def groupby_analysis(self,group_col,agg_col,agg_func,dropna = True):
+        logger.info(f"executing groupby_analysis....")
         output = self.data.dd.groupby(group_col,dropna)[agg_col].agg(agg_func).to_dict()
         return output
 
     def profile(self):
+        logger.info(f"executing profile....")
         missing_report = self.missing_analysis()
         duplicate_report = self.duplicate_analysis()
         output = {
@@ -65,8 +83,8 @@ class DataAnalytics(BaseJob):
 
         return output
 
-    def run(self, context: list[dict]):
-        for task in context:
-            function = getattr(self, str(task["function"]))
-            params = task.get("params", {})
-            function(**params)
+    def run(self, contexts: list[dict]):
+        for context in contexts:
+            function = getattr(self, str(context["function"]))
+            params = context.get("params", {})
+            self.results[str(context["task"])] = function(**params)

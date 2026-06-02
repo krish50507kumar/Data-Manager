@@ -8,7 +8,8 @@ class JSONStorage(BaseStorage):
     def load(self, path):
         self.path = path
         self.dd = pd.read_json(path)
-    def write(self,data):
-        self.dd.to_json(self.path, index=False)
+    def write(self,path):
+        path = path if path is not None else self.path
+        self.dd.to_json(path, index=False)
     def store(self, data):
         self.dd = pd.DataFrame(data)

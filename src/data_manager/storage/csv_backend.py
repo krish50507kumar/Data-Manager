@@ -10,7 +10,7 @@ class CSVStorage(BaseStorage):
     def load(self, path):
         self.path = path
         self.dd = pd.read_csv(self.path)
-    def write(self, data):
-        self.dd = data
-        self.dd.to_csv(self.path, index=False)
+    def write(self,path=None):
+        path = path if path is not None else self.path
+        self.dd.to_csv(path, index=False)
 
