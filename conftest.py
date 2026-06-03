@@ -8,7 +8,7 @@ from data_manager.storage.csv_backend import CSVStorage
 def sample_storage():
     storage = CSVStorage()
 
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "name": ["Alice", "Bob", "Bob", None],
         "age": [20, 21, 21, None],
         "salary": [50000, 60000, 60000, None]

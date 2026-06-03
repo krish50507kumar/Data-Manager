@@ -6,7 +6,7 @@ from data_manager.jobs.data_engineer import DataEngineer
 def test_remove_duplicates():
     storage = CSVStorage()
 
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "id": [1, 1, 2]
     })
 
@@ -14,17 +14,17 @@ def test_remove_duplicates():
 
     engineer.removeDuplicates()
 
-    assert len(storage.dd) == 2
+    assert len(storage.data) == 2
 
 def test_removeNull():
     storage = CSVStorage()
 
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "id": [1, None, 2]
     })
 
     engineer = DataEngineer(storage)
 
     engineer.removeNull()
-    assert len(storage.dd) == 2
+    assert len(storage.data) == 2
 

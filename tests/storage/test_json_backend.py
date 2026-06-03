@@ -15,9 +15,9 @@ def test_store(storage):
 
     storage.store(data)
 
-    assert storage.dd is not None
-    assert len(storage.dd) == 2
-    assert list(storage.dd.columns) == ["name", "age"]
+    assert storage.data is not None
+    assert len(storage.data) == 2
+    assert list(storage.data.columns) == ["name", "age"]
 
 
 
@@ -34,8 +34,8 @@ def test_load(storage, tmp_path):
 
     storage.load(json_file)
 
-    assert storage.dd is not None
-    assert len(storage.dd) == 1
+    assert storage.data is not None
+    assert len(storage.data) == 1
     assert storage.path == json_file
 
 
@@ -48,7 +48,7 @@ def test_load_invalid_path(storage):
 
 
 def test_write(storage, tmp_path):
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "name": ["Alice"],
         "age": [20]
     })
@@ -67,7 +67,7 @@ def test_write_uses_stored_path(storage, tmp_path):
 
     storage.path = output_file
 
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "x": [1, 2]
     })
 
@@ -84,7 +84,7 @@ def test_json_round_trip(storage, tmp_path):
         "age": [20, 21]
     })
 
-    storage.dd = original
+    storage.data = original
 
     json_file = tmp_path / "roundtrip.json"
 
@@ -93,5 +93,5 @@ def test_json_round_trip(storage, tmp_path):
     loaded = JSONStorage()
     loaded.load(json_file)
 
-    assert len(loaded.dd) == len(original)
-    assert list(loaded.dd.columns) == list(original.columns)
+    assert len(loaded.data) == len(original)
+    assert list(loaded.data.columns) == list(original.columns)

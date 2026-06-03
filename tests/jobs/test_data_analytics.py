@@ -13,7 +13,7 @@ def test_summary_returns_dict(sample_storage):
 
 def test_summary_empty_dataframe():
     storage = CSVStorage()
-    storage.dd = pd.DataFrame()
+    storage.data = pd.DataFrame()
 
     analytics = DataAnalytics(storage)
 
@@ -63,7 +63,7 @@ def test_missing_analysis(sample_storage):
 def test_missing_analysis_no_nulls():
     storage = CSVStorage()
 
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "a": [1, 2],
         "b": [3, 4]
     })
@@ -86,7 +86,7 @@ def test_duplicate_analysis(sample_storage):
 def test_duplicate_analysis_no_duplicates():
     storage = CSVStorage()
 
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "id": [1, 2, 3]
     })
 

@@ -8,7 +8,7 @@ from data_manager.storage.csv_backend import CSVStorage
 def valid_storage():
     storage = CSVStorage()
 
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "name": ["Alice", "Bob"],
         "age": [20, 21],
         "salary": [50000.0, 60000.0]
@@ -57,7 +57,7 @@ def test_validate_schema_missing_column(valid_storage):
 def test_validate_schema_nulls():
     storage = CSVStorage()
 
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "name": ["Alice", None]
     })
 
@@ -93,7 +93,7 @@ def test_validate_schema_wrong_dtype(valid_storage):
 def test_validate_schema_nullable_allowed():
     storage = CSVStorage()
 
-    storage.dd = pd.DataFrame({
+    storage.data = pd.DataFrame({
         "name": ["Alice", None]
     })
 

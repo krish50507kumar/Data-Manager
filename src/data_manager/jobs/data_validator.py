@@ -18,9 +18,9 @@ logging.basicConfig(
 logger = logging.getLogger("DataManager")
 
 class DataValidator(BaseJob):
-    def __init__(self,data):
+    def __init__(self,storage):
         super().__init__()
-        self.data = data
+        self.storage = storage
         self.results = {}
 
     def validate_schema(self, schema):
@@ -31,12 +31,12 @@ class DataValidator(BaseJob):
 
         for col, constraints in schema.items():
 
-            if col not in self.data.dd.columns:
+            if col not in self.storage.data.columns:
                 errors[col] = "Column not found"
                 valid = False
                 continue
 
-            series = self.data.dd[col]
+            series = self.storage.data[col]
 
             nullable = constraints.get("nullable", True)
 

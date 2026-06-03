@@ -13,30 +13,30 @@ logging.basicConfig(
 logger = logging.getLogger("DataManager")
 
 class DataEngineer(BaseJob):
-    def __init__(self,data):
+    def __init__(self,storage):
         super().__init__()
-        self.data = data
+        self.storage = storage
 
     def removeDuplicates(self):
         logger.info(f"executing removeDuplicates....")
-        before = self.data.dd.shape[0]
-        self.data.dd.drop_duplicates(inplace=True)
-        after = self.data.dd.shape[0]
+        before = self.storage.data.shape[0]
+        self.storage.data.drop_duplicates(inplace=True)
+        after = self.storage.data.shape[0]
         logger.info(f"{before-after} duplicate rows removed")
 
     def removeNull(self,method = "drop",num_const = 0,category_const ="Unknown" ):
         logger.info(f"executing removeNull....")
         if method == "drop":
-            before = self.data.dd.shape[0]
-            self.data.dd.dropna(inplace=True)
-            after = self.data.dd.shape[0]
+            before = self.storage.data.shape[0]
+            self.storage.data.dropna(inplace=True)
+            after = self.storage.data.shape[0]
             logger.info(f"{before-after} null rows dropped")
         elif method == "const":
-            total_null = self.data.dd.isnull().any(axis=1).sum()
-            numericCols = self.data.dd.select_dtypes(include=np.number).columns
-            objectCols = self.data.dd.select_dtypes(exclude=np.number).columns
-            self.data.dd[numericCols] = self.data.dd[numericCols].fillna(num_const)
-            self.data.dd[objectCols] = self.data.dd[objectCols].fillna(category_const)
+            total_null = self.storage.data.isnull().any(axis=1).sum()
+            numericCols = self.storage.data.select_dtypes(include=np.number).columns
+            objectCols = self.storage.data.select_dtypes(exclude=np.number).columns
+            self.storage.data[numericCols] = self.storage.data[numericCols].fillna(num_const)
+            self.storage.data[objectCols] = self.storage.data[objectCols].fillna(category_const)
             logger.info(f"{total_null} null values are filled")
         else :
             raise ValueError("Invalid method")
