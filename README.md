@@ -4,6 +4,7 @@ A modular Python framework for data engineering, validation, and analytics workf
 
 DataManager uses a job-based architecture and pluggable storage backends to provide a structured approach for processing tabular datasets.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ## Features
 
 * **Modular Storage Backends**: Decoupled storage interfaces allowing seamless switching between In-Memory, CSV, and JSON data layers.
