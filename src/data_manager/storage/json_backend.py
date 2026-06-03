@@ -1,5 +1,6 @@
 from data_manager.storage.base import BaseStorage
 import pandas as pd
+from pathlib import Path
 class JSONStorage(BaseStorage):
     """
     Storage backend for handling JSON files.
@@ -26,7 +27,10 @@ class JSONStorage(BaseStorage):
             path (str): The destination path. If None, uses the loaded path.
         """
         path = path if path is not None else self.path
-        self.data.to_json(path, index=False)
+        file_path = Path(path)
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        self.data.to_json(file_path, index=False)
+
     def store(self, data):
         """
         Stores raw data by converting it into a pandas DataFrame.

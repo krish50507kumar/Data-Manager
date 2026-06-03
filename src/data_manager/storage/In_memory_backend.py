@@ -1,7 +1,7 @@
 import pandas as pd
 from data_manager.storage.base import BaseStorage
 import logging
-
+from pathlib import Path
 logger = logging.getLogger("DataManager")
 
 class InMemoryStorage(BaseStorage):
@@ -35,10 +35,13 @@ class InMemoryStorage(BaseStorage):
         Raises:
             ValueError: If no data is currently stored in memory.
         """
+        path = path if path is not None else self.path
+        file_path = Path(path)
+        file_path.parent.mkdir(parents=True, exist_ok=True)
         if self.data is None:
             raise ValueError("No data to write. Call store() or load() first.")
-        self.data.to_csv(path, index=False)
-        logger.info(f"Written {len(self.data)} rows to {path}")
+        self.data.to_csv(file_path, index=False)
+        logger.info(f"Written {len(self.data)} rows to {file_path}")
 
     def store(self, data: pd.DataFrame) -> None:
         """

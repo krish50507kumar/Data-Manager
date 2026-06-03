@@ -1,5 +1,6 @@
 from data_manager.storage.base import BaseStorage
 import pandas as pd
+from pathlib import Path
 class CSVStorage(BaseStorage):
     """
         Storage backend for handling CSV files.
@@ -34,5 +35,7 @@ class CSVStorage(BaseStorage):
             path (str, optional): The destination path. If None, uses the loaded path.
         """
         path = path if path is not None else self.path
-        self.data.to_csv(path, index=False)
+        file_path = Path(path)
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        self.data.to_csv(file_path, index=False)
 
