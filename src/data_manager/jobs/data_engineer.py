@@ -13,11 +13,23 @@ logging.basicConfig(
 logger = logging.getLogger("DataManager")
 
 class DataEngineer(BaseJob):
+    """
+    Job responsible for data cleaning, transformation, and preprocessing tasks.
+    """
     def __init__(self,storage):
+        """
+        Initializes the DataEngineer job.
+
+        Args:
+            data (BaseStorage): The storage backend containing the loaded DataFrame.
+        """
         super().__init__()
         self.storage = storage
 
     def removeDuplicates(self):
+        """
+        Removes duplicate rows from the dataset in-place.
+        """
         logger.info(f"executing removeDuplicates....")
         before = self.storage.data.shape[0]
         self.storage.data.drop_duplicates(inplace=True)
@@ -25,6 +37,20 @@ class DataEngineer(BaseJob):
         logger.info(f"{before-after} duplicate rows removed")
 
     def removeNull(self,method = "drop",num_const = 0,category_const ="Unknown" ):
+        """
+        Handles missing (null) values in the dataset in-place.
+
+        Args:
+            method (str, optional): The strategy to use ('drop' to remove rows,
+                                    'const' to fill with constants). Defaults to "drop".
+            num_const (int/float, optional): The constant to fill nulls in numeric
+                                             columns if method="const". Defaults to 0.
+            category_const (str, optional): The constant to fill nulls in categorical
+                                            columns if method="const". Defaults to "Unknown".
+
+        Raises:
+            ValueError: If an invalid method is provided.
+        """
         logger.info(f"executing removeNull....")
         if method == "drop":
             before = self.storage.data.shape[0]
@@ -42,6 +68,13 @@ class DataEngineer(BaseJob):
             raise ValueError("Invalid method")
 
     def run(self, contexts: list[dict]):
+        """
+        Executes a sequence of engineering functions defined in the context.
+
+        Args:
+            contexts (list[dict]): A list of dictionaries, where each dict specifies
+                                   the 'function' name to run and its 'params'.
+        """
         try:
             for context in contexts:
                 function = getattr(self, str(context["function"]))

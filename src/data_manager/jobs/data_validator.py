@@ -18,12 +18,32 @@ logging.basicConfig(
 logger = logging.getLogger("DataManager")
 
 class DataValidator(BaseJob):
+    """
+    Job responsible for validating the dataset against predefined schemas and constraints.
+    """
     def __init__(self,storage):
+        """
+        Initializes the DataValidator job.
+
+        Args:
+            data (BaseStorage): The storage backend containing the loaded DataFrame.
+        """
         super().__init__()
         self.storage = storage
         self.results = {}
 
     def validate_schema(self, schema):
+        """
+        Validates the dataset columns against an expected schema.
+
+        Args:
+            schema (dict): A dictionary where keys are column names and values
+                           are constraint dictionaries (e.g., {'nullable': False, 'dtype': int}).
+
+        Returns:
+            dict: A dictionary containing a boolean 'valid' flag and an 'errors'
+                  dictionary listing validation failures per column.
+        """
         logger.info("Validating schema....")
 
         valid = True
@@ -90,6 +110,14 @@ class DataValidator(BaseJob):
 
 
     def run(self, contexts: list[dict]):
+        """
+        Executes a sequence of validation functions defined in the context.
+
+        Args:
+            contexts (list[dict]): A list of dictionaries, where each dict specifies
+                                   the 'function' name to run, its 'params', and an
+                                   identifier 'task' to store the result.
+        """
         try:
             for context in contexts:
                 function = getattr(self, str(context["function"]))

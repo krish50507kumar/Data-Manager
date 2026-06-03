@@ -10,12 +10,27 @@ logger = logging.getLogger("DataManager")
 from data_manager.core.base_job import BaseJob
 import pandas as pd
 class DataAnalytics(BaseJob):
+    """
+    Job responsible for analyzing datasets, generating metrics, and profiling data.
+    """
     def __init__(self,storage):
+        """
+        Initializes the DataAnalytics job.
+
+        Args:
+            data (BaseStorage): The storage backend containing the loaded DataFrame.
+        """
         super().__init__()
         self.storage = storage
         self.results = {}
 
     def duplicate_analysis(self):
+        """
+        Analyzes the dataset for duplicate rows.
+
+        Returns:
+            dict: A dictionary containing the raw count and percentage of duplicate rows.
+        """
         logger.info(f"executing duplicate_analysis....")
         total_rows = self.storage.data.shape[0]
         duplicate_row =self.storage.data.duplicated().sum()
@@ -26,6 +41,13 @@ class DataAnalytics(BaseJob):
         return output
 
     def missing_analysis(self):
+        """
+        Analyzes the dataset for missing (null) values.
+
+        Returns:
+            dict: A dictionary containing total rows with missing values,
+                  percentage of missing rows, and column-wise null counts.
+        """
         logger.info(f"executing missing_analysis....")
         no_of_missing_rows = self.storage.data.isnull().any(axis=1).sum()
         total_rows = self.storage.data.shape[0]
@@ -38,6 +60,18 @@ class DataAnalytics(BaseJob):
         return output
 
     def column_stats(self, column=None):
+        """
+        Generates descriptive statistics for a specific column.
+
+        Args:
+            column (str): The name of the column to analyze.
+
+        Returns:
+            dict: A dictionary containing descriptive statistics (count, mean, std, etc.).
+
+        Raises:
+            ValueError: If no column is provided or the column does not exist.
+        """
         logger.info(f"executing column_stats over {column}....")
         if column is None:
             raise ValueError("Please provide a column name.")
@@ -49,6 +83,13 @@ class DataAnalytics(BaseJob):
         return output
 
     def summary(self):
+        """
+        Provides a general summary of the dataset.
+
+        Returns:
+            dict: General metadata including rows, columns, data types,
+                  memory usage, and missing values.
+        """
         logger.info(f"executing summary....")
         output = {
             "Rows":self.storage.data.shape[0],
@@ -60,6 +101,21 @@ class DataAnalytics(BaseJob):
         return output
 
     def groupby_analysis(self,group_col,agg_col,agg_func,dropna = True):
+        """
+        Performs a group-by aggregation analysis.
+
+        Args:
+            group_col (str): The column to group by.
+            agg_col (str): The column to aggregate.
+            agg_func (str/callable): The aggregation function to apply (e.g., 'mean', 'sum').
+            dropna (bool, optional): Whether to drop nulls in the group keys. Defaults to True.
+
+        Returns:
+            dict: The result of the group-by aggregation as a dictionary.
+
+        Raises:
+            ValueError: If required columns or functions are not provided.
+        """
         logger.info(f"executing groupby_analysis....")
         if group_col or agg_col or agg_func is None:
             raise ValueError("Please provide a column name or a function.")
@@ -67,6 +123,13 @@ class DataAnalytics(BaseJob):
         return output
 
     def profile(self):
+        """
+        Generates a comprehensive data profile report, combining summaries,
+        missing/duplicate analysis, and type-specific statistics.
+
+        Returns:
+            dict: A complete profiling report.
+        """
         logger.info(f"executing profile....")
         missing_report = self.missing_analysis()
         duplicate_report = self.duplicate_analysis()
@@ -86,6 +149,14 @@ class DataAnalytics(BaseJob):
         return output
 
     def run(self, contexts: list[dict]):
+        """
+        Executes a sequence of analytics functions defined in the context.
+
+        Args:
+            contexts (list[dict]): A list of dictionaries, where each dict specifies
+                                   the 'function' name to run, its 'params', and an
+                                   identifier 'task' to store the result.
+        """
         try:
             for context in contexts:
                 function = getattr(self, str(context["function"]))
