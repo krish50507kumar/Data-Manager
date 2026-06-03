@@ -28,3 +28,6 @@ htmlcov/
 test_env/
 __pycache__/
 .pytest_cache/
+test_env_1/
+__pycache__/
+.pytest_cache/
