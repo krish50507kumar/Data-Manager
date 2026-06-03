@@ -1,11 +1,12 @@
 # Data Manager
 
-A robust, modular Python framework built for orchestrating data pipelines, performing rigorous validations, and executing analytics. Designed with a clean separation of concerns, this project provides a flexible architecture for handling data workflows from ingestion to analysis.
+A modular Python framework for data engineering, validation, and analytics workflows.
+
+DataManager uses a job-based architecture and pluggable storage backends to provide a structured approach for processing tabular datasets.
 
 ## Features
 
 * **Modular Storage Backends**: Decoupled storage interfaces allowing seamless switching between In-Memory, CSV, and JSON data layers.
-* **Pipeline Orchestration**: A dedicated `runner.py` to execute complex data jobs systematically.
 * **Extensible Job Architecture**: Abstracted base classes (`base_job.py`) that make it easy to write custom logic for engineering, validation, and analytics.
 * **Comprehensive Test Suite**: Test-driven design featuring deep unit testing and interactive Jupyter Notebooks for debugging and validation.
 
@@ -25,11 +26,6 @@ The framework is divided into three primary layers:
 * `data_analytics.py`: Calculation of metrics, aggregations, and business logic.
 
 
-3. **Orchestration Layer (`src/data_manager/runner.py`)**
-* The central engine responsible for loading configurations, initializing the correct storage backend, and sequentially executing the defined jobs.
-
-
-
 ## Directory Structure
 
 ```text
@@ -38,7 +34,7 @@ The framework is divided into three primary layers:
  ┃ ┗ 📜 notes_1.ipynb
  ┣ 📂 src
  ┃ ┗ 📂 data_manager
- ┃   ┣ 📂 config                # Configuration management
+ ┃   ┣ 📂 config                
  ┃   ┣ 📂 core
  ┃   ┃ ┗ 📜 base_job.py         # Abstract base class for all pipeline jobs
  ┃   ┣ 📂 jobs
@@ -50,7 +46,7 @@ The framework is divided into three primary layers:
  ┃   ┃ ┣ 📜 base.py             # Storage interface definitions
  ┃   ┃ ┣ 📜 csv_backend.py
  ┃   ┃ ┗ 📜 json_backend.py
- ┃   ┗ 📜 runner.py             # Pipeline execution engine
+ ┃   ┗ 📜 runner.py             
  ┣ 📂 tests                     # Unit and integration tests (Pytest)
  ┃ ┣ 📂 Data                    # Mock datasets for testing pipelines
  ┃ ┣ 📂 jobs                    # Tests for specific job implementations
@@ -77,6 +73,96 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 ```
+### Installation
+
+```bash
+pip install -r requirements.txt
+```
+## Quick Start
+
+```python
+from data_manager.storage.csv_backend import CSVStorage
+from data_manager.jobs.data_analytics import DataAnalytics
+
+storage = CSVStorage()
+storage.read("data.csv")
+
+analytics = DataAnalytics(storage)
+
+print(analytics.summary())
+```
+
+### example
+
+```python
+
+from data_manager.storage.csv_backend import CSVStorage
+from data_manager.jobs.data_engineer import DataEngineer
+from data_manager.jobs.data_analytics import DataAnalytics
+import pandas as pd
+df = pd.DataFrame()
+mystorage = CSVStorage()
+mystorage.store(df)
+
+mydataengineer = DataEngineer(mystorage)
+
+dataengineercontext = [
+    {
+        "task":"removeDuplicates",
+        "function":"removeDuplicates",
+        "params":{}
+    },
+    {
+        "task":"removeNull",
+        "function":"removeNull",
+        "params":{
+            "method":"const",
+            "num_const":0,
+            "category_const":"Unknown"
+        }
+    }
+]
+
+mydataengineer.run(dataengineercontext)
+
+mydataanalytics = DataAnalytics(mystorage)
+
+dataanalyticscontext = [
+    {
+        "task":"Summary_of_the_data",
+        "function":"summary",
+        "params":{}
+    },
+    {
+        "task":"Checking_name_column",
+        "function":"column_stats",
+        "params":{
+        }
+    },
+    {
+        "task":"Data_profile",
+        "function":"profile",
+        "params":{}
+    },
+    {
+        "task":"grouping_name_with_salary ",
+        "function":"groupby_analysis",
+        "params":{}
+    }
+]
+
+mydataanalytics.run(dataanalyticscontext)
+
+# print(MyDataAnalytics.results.get("Summary_of_the_data"))
+# print(MyDataAnalytics.results.get("Checking_name_column"))
+# print(MyDataAnalytics.results.get("Data_profile"))
+
+mystorage.write(path = "D:\\workspace\\Dev tools\\PythonProjects\\DataManager\\tests\\Data\\test_data_3.csv")
+
+print("THE END")
+
+
+```
 
 ### Usage
 
@@ -87,7 +173,7 @@ python main.py
 
 ```
 
-*Note: You can adjust the specific workflows, data paths, and storage backends being used by modifying the configuration passed to the `runner.py`.*
+
 
 ## Testing
 
@@ -103,6 +189,27 @@ pytest
 pytest -v
 
 ```
+## Current Capabilities
 
+| Component | Features |
+|------------|------------|
+| Storage | CSV, JSON, In-Memory |
+| Engineering | Remove duplicates, Handle missing values |
+| Validation | Schema validation, Nullability checks |
+| Analytics | Summary, Profiling, Missing value analysis, Column statistics |
+
+## Roadmap
+
+- [x] CSV Backend
+- [x] JSON Backend
+- [x] In-Memory Backend
+- [x] Data Validation
+- [x] Data Analytics
+- [ ] Excel Backend
+- [ ] Parquet Backend
+- [ ] SQL Backend
+- [ ] Automated EDA Reports
+
+---
 # Author
 ### Krish Kumar

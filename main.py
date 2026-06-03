@@ -3,7 +3,7 @@ from data_manager.storage.csv_backend import CSVStorage
 from data_manager.jobs.data_engineer import DataEngineer
 from data_manager.jobs.data_analytics import DataAnalytics
 import pandas as pd
-# data_path = "D:\\workspace\\Dev tools\\PythonProjects\\DataManager\\tests\\Data\\test_data_1.csv"
+data_path = "D:\\workspace\\Dev tools\\PythonProjects\\DataManager\\tests\\Data\\test_data_1.csv"
 df = pd.DataFrame()
 MyStorage = CSVStorage()
 MyStorage.store(df)
@@ -61,6 +61,6 @@ MyDataAnalytics.run(DataAnalyticsContext)
 # print(MyDataAnalytics.results.get("Checking_name_column"))
 # print(MyDataAnalytics.results.get("Data_profile"))
 
-# MyStorage.write(path = "D:\\workspace\\Dev tools\\PythonProjects\\DataManager\\tests\\Data\\test_data_3.csv")
+MyStorage.write(path = "D:\\workspace\\Dev tools\\PythonProjects\\DataManager\\tests\\Data\\test_data_3.csv")
 
 print("THE END")
