@@ -1,6 +1,7 @@
 from data_manager.storage.base import BaseStorage
 import pandas as pd
 from pathlib import Path
+from collections import deque
 class CSVStorage(BaseStorage):
     """
         Storage backend for handling CSV files.
@@ -10,6 +11,8 @@ class CSVStorage(BaseStorage):
         super().__init__()
         self.data = None
         self.path = None | str
+        self.stack = deque()
+
     def store(self, data):
         """
         Stores a pandas DataFrame in the instance.
