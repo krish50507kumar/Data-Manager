@@ -1,7 +1,5 @@
 import numpy as np
 import logging
-
-
 from data_manager.core.base_job import BaseJob
 import pandas as pd
 
@@ -30,6 +28,7 @@ class DataEngineer(BaseJob):
         """
         Removes duplicate rows from the dataset in-place.
         """
+        self._helper._record_table()
         logger.info(f"executing removeDuplicates....")
         before = self.storage.data.shape[0]
         self.storage.data.drop_duplicates(inplace=True)
@@ -51,6 +50,7 @@ class DataEngineer(BaseJob):
         Raises:
             ValueError: If an invalid method is provided.
         """
+        self._helper._record_table()
         logger.info(f"executing removeNull....")
         if method == "drop":
             before = self.storage.data.shape[0]

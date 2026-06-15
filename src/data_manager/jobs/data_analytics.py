@@ -1,5 +1,6 @@
 from datetime import datetime
 import logging
+from data_manager.jobs._helper_transactions import _Record
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
@@ -23,6 +24,7 @@ class DataAnalytics(BaseJob):
         super().__init__()
         self.storage = storage
         self.results = {}
+        self._helper = _Record(self.storage)
 
     def duplicate_analysis(self):
         """

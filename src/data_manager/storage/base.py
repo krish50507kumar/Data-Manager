@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from data_manager.transactions.savepoint import Savepoint
 class BaseStorage(ABC):
     """
     Abstract base class for all storage backends.
@@ -34,3 +35,17 @@ class BaseStorage(ABC):
             data (Any): The data object (e.g., DataFrame) to store.
         """
         pass
+
+    def savepoint(self,name):
+        self.stack.append(Savepoint(name))
+
+    def roleback(self):
+        sp = self.stack.pop()
+        if '__table__' in sp.deltas:
+            self.data = sp.deltas['__table__'].copy()
+        else:
+            for col , old_vals in sp.deltas.items():
+                if old_vals is None:
+                    self.data.drop(col, inplace=True)
+                else:
+                   self.data[col] = old_vals

@@ -1,7 +1,10 @@
+
 from data_manager.storage.base import BaseStorage
 import pandas as pd
 from pathlib import Path
 from collections import deque
+
+
 class CSVStorage(BaseStorage):
     """
         Storage backend for handling CSV files.
@@ -41,4 +44,3 @@ class CSVStorage(BaseStorage):
         file_path = Path(path)
         file_path.parent.mkdir(parents=True, exist_ok=True)
         self.data.to_csv(file_path, index=False)
-
