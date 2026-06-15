@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from data_manager.transactions.savepoint import Savepoint
+from data_manager.transactions._savepoint import _Savepoint
 class BaseStorage(ABC):
     """
     Abstract base class for all storage backends.
@@ -37,7 +37,7 @@ class BaseStorage(ABC):
         pass
 
     def savepoint(self,name):
-        self.stack.append(Savepoint(name))
+        self.stack.append(_Savepoint(name))
 
     def roleback(self):
         sp = self.stack.pop()
