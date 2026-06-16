@@ -2,6 +2,7 @@ import pandas as pd
 from data_manager.storage.base import BaseStorage
 import logging
 from pathlib import Path
+from collections import deque
 logger = logging.getLogger("DataManager")
 
 class InMemoryStorage(BaseStorage):
@@ -13,6 +14,7 @@ class InMemoryStorage(BaseStorage):
         super().__init__()
         self.path: str | None = None
         self.data: pd.DataFrame | None = None
+        self.stack = deque()
 
     def load(self, path: str) -> None:
         """

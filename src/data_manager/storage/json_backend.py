@@ -1,6 +1,7 @@
 from data_manager.storage.base import BaseStorage
 import pandas as pd
 from pathlib import Path
+from collections import deque
 class JSONStorage(BaseStorage):
     """
     Storage backend for handling JSON files.
@@ -10,6 +11,7 @@ class JSONStorage(BaseStorage):
         super().__init__()
         self.data=None
         self.path = None
+        self.stack = deque()
     def load(self, path):
         """
         Loads a JSON file into a pandas DataFrame.
