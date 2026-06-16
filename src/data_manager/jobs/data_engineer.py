@@ -1,6 +1,7 @@
 import numpy as np
 import logging
 from data_manager.core.base_job import BaseJob
+from data_manager.jobs._helper_transactions import _Record
 import pandas as pd
 
 logging.basicConfig(
@@ -23,6 +24,7 @@ class DataEngineer(BaseJob):
         """
         super().__init__()
         self.storage = storage
+        self._helper = _Record(self.storage)
 
     def removeDuplicates(self):
         """

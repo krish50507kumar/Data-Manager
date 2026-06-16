@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+
+from fontTools.misc import iftSparseBitSet
+
 from data_manager.transactions._savepoint import _Savepoint
 class BaseStorage(ABC):
     """
@@ -40,6 +43,8 @@ class BaseStorage(ABC):
         self.stack.append(_Savepoint(name))
 
     def roleback(self):
+        if not self.stack :
+            return
         sp = self.stack.pop()
         if '__table__' in sp.deltas:
             self.data = sp.deltas['__table__'].copy()
