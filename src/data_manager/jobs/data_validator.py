@@ -120,6 +120,7 @@ class DataValidator(BaseJob):
         """
         try:
             for context in contexts:
+                logger.info(f"DataValidator: executing {context}")
                 function = getattr(self, str(context["function"]))
                 params = context.get("params", {})
                 self.results[str(context["task"])] = function(**params)

@@ -161,9 +161,9 @@ class DataAnalytics(BaseJob):
         """
         try:
             for context in contexts:
+                logger.info(f"DataAnalytics: executing {context}")
                 function = getattr(self, str(context["function"]))
                 params = context.get("params", {})
                 self.results[str(context["task"])] = function(**params)
         except Exception as e:
             logger.error(f"{e},under Data Analytics Job")
-            raise

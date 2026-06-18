@@ -40,9 +40,34 @@ class BaseStorage(ABC):
         pass
 
     def savepoint(self,name):
+        """
+            Creates a new savepoint and pushes it onto the transaction stack.
+
+            This method allows you to mark a specific state in the data's history
+            so that it can be reverted to later using the `rollback` method.
+
+            Args:
+                name (str): A descriptive identifier for the savepoint.
+        """
         self.stack.append(_Savepoint(name))
 
-    def roleback(self):
+    def rollback(self):
+        """
+            Reverts the data to the state of the most recent savepoint.
+
+            Pops the last savepoint from the transaction stack and applies its
+            recorded deltas. If the stack is empty, the method exits silently.
+
+            The rollback handles two types of restorations:
+            1. Full Table: If a '__table__' key exists in the deltas, the entire
+               dataframe is restored from that copy.
+            2. Column-Level: Iterates through column deltas. If the previous value
+               was None, the column is assumed to be new and is dropped. Otherwise,
+               the column is restored to its previous values.
+
+            Returns:
+                None
+        """
         if not self.stack :
             return
         sp = self.stack.pop()

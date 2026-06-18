@@ -79,6 +79,7 @@ class DataEngineer(BaseJob):
         """
         try:
             for context in contexts:
+                logger.info(f"DataEngineer: executing {context}")
                 function = getattr(self, str(context["function"]))
                 params = context.get("params", {})
                 function(**params)

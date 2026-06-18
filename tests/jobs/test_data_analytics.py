@@ -141,7 +141,7 @@ def test_run_pipeline(sample_storage):
 import pytest
 
 
-def test_run_invalid_function(sample_storage):
+def test_run_invalid_function_logs_error(sample_storage, caplog):
     analytics = DataAnalytics(sample_storage)
 
     context = [
@@ -152,5 +152,6 @@ def test_run_invalid_function(sample_storage):
         }
     ]
 
-    with pytest.raises(AttributeError):
-        analytics.run(context)
+    analytics.run(context)
+
+    assert "under Data Analytics Job" in caplog.text
